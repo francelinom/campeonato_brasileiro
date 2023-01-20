@@ -19,4 +19,5 @@ public class Time {
 
     @Column(length = 2)
     private String uf;
+    private String estadio;
 }
