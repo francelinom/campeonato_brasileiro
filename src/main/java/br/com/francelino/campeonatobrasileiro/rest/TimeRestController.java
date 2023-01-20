@@ -22,7 +22,7 @@ public class TimeRestController {
     }
 
     @ApiOperation(value = "Obtém os dados de um time")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "{id}")
     public ResponseEntity<Time> getTime(@PathVariable Integer id) {
         return ResponseEntity.ok().body(timeService.obterTime(id));
     }
