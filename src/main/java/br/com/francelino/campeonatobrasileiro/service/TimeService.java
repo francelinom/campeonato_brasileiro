@@ -53,4 +53,8 @@ public class TimeService {
     public TimeDTO obterTime(Integer id) {
         return toDto(repository.findById(id).get());
     }
+
+    public List<Time> findAll() {
+        return repository.findAll();
+    }
 }
