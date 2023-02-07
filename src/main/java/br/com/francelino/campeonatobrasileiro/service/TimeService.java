@@ -35,7 +35,7 @@ public class TimeService {
         return entity;
     }
 
-    private TimeDTO toDto(Time entity) {
+    public TimeDTO toDto(Time entity) {
         TimeDTO dto = new TimeDTO();
         dto.setEstadio(entity.getEstadio());
         dto.setNome(entity.getNome());

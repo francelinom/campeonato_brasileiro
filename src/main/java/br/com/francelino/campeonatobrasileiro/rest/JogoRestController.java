@@ -1,13 +1,11 @@
 package br.com.francelino.campeonatobrasileiro.rest;
 
+import br.com.francelino.campeonatobrasileiro.dto.JogoDTO;
 import br.com.francelino.campeonatobrasileiro.entity.Jogo;
 import br.com.francelino.campeonatobrasileiro.service.JogoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +23,22 @@ public class JogoRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Jogo>> obterJogos() {
-        return ResponseEntity.ok().body(jogoService.obterJogos());
+    public ResponseEntity<List<JogoDTO>> obterJogos() {
+        return ResponseEntity.ok().body(jogoService.listarJogos());
+    }
+
+    @PostMapping(value = "/finalizar/{id}")
+    public ResponseEntity<Void> finalizar(@RequestBody JogoDTO jogoDTO) {
+        return ResponseEntity.ok().body(jogoService.finalizar(jogoDTO));
+    }
+
+    @GetMapping(value = "/classificacao")
+    public ResponseEntity<JogoDTO> classificacao() {
+        return ResponseEntity.ok().body(jogoService.classificacao());
+    }
+
+    @GetMapping(value = "/jogo/{id}")
+    public ResponseEntity<JogoDTO> obterJogo(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(jogoService.obterJogo(id));
     }
 }

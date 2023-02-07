@@ -1,5 +1,6 @@
 package br.com.francelino.campeonatobrasileiro.service;
 
+import br.com.francelino.campeonatobrasileiro.dto.JogoDTO;
 import br.com.francelino.campeonatobrasileiro.entity.Jogo;
 import br.com.francelino.campeonatobrasileiro.entity.Time;
 import br.com.francelino.campeonatobrasileiro.repository.JogoRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JogoService {
@@ -78,7 +80,30 @@ public class JogoService {
         return jogo;
     }
 
-    public List<Jogo> obterJogos() {
-        return jogoRepository.findAll();
+    private JogoDTO entityToDTO(Jogo entity) {
+        JogoDTO jogoDTO = new JogoDTO();
+        jogoDTO.setId(entity.getId());
+        jogoDTO.setData(entity.getData());
+        jogoDTO.setEncerrado(entity.getEncerrado());
+        jogoDTO.setGolsTime1(entity.getGolsTime1());
+        jogoDTO.setGolsTime2(entity.getGolsTime2());
+        jogoDTO.setPublicoPagante(entity.getPublicoPagante());
+        jogoDTO.setRodada(entity.getRodada());
+        jogoDTO.setTime1(timeService.toDto(entity.getTime1()));
+        jogoDTO.setTime2(timeService.toDto(entity.getTime2()));
+        return jogoDTO;
+    }
+
+    public List<JogoDTO> listarJogos() {
+        return jogoRepository.findAll().stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
+    }
+
+    public Object finalizar(JogoDTO jogoDTO) {
+    }
+
+    public Object classificacao() {
+    }
+
+    public Object obterJogo(Integer id) {
     }
 }
