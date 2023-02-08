@@ -1,6 +1,7 @@
 package br.com.francelino.campeonatobrasileiro.rest;
 
 import br.com.francelino.campeonatobrasileiro.dto.JogoDTO;
+import br.com.francelino.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.francelino.campeonatobrasileiro.entity.Jogo;
 import br.com.francelino.campeonatobrasileiro.service.JogoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,16 @@ public class JogoRestController {
     }
 
     @PostMapping(value = "/finalizar/{id}")
-    public ResponseEntity<Void> finalizar(@RequestBody JogoDTO jogoDTO) {
-        return ResponseEntity.ok().body(jogoService.finalizar(jogoDTO));
+    public ResponseEntity<JogoDTO> finalizar(@PathVariable Integer id, @RequestBody JogoFinalizadoDTO jogoFinalizadoDTO) throws Exception {
+        return ResponseEntity.ok().body(jogoService.finalizar(id, jogoFinalizadoDTO));
     }
 
-    @GetMapping(value = "/classificacao")
-    public ResponseEntity<JogoDTO> classificacao() {
-        return ResponseEntity.ok().body(jogoService.classificacao());
-    }
+    /*
+     @GetMapping(value = "/classificacao")
+     public ResponseEntity<ClassificacaoDTO> classificacao() {
+     return ResponseEntity.ok().body(jogoService.classificacao());
+     }
+     */
 
     @GetMapping(value = "/jogo/{id}")
     public ResponseEntity<JogoDTO> obterJogo(@PathVariable Integer id) {

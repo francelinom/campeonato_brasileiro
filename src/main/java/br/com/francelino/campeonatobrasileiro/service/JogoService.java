@@ -1,6 +1,7 @@
 package br.com.francelino.campeonatobrasileiro.service;
 
 import br.com.francelino.campeonatobrasileiro.dto.JogoDTO;
+import br.com.francelino.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.francelino.campeonatobrasileiro.entity.Jogo;
 import br.com.francelino.campeonatobrasileiro.entity.Time;
 import br.com.francelino.campeonatobrasileiro.repository.JogoRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,12 +100,24 @@ public class JogoService {
         return jogoRepository.findAll().stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
     }
 
-    public Object finalizar(JogoDTO jogoDTO) {
+    public JogoDTO finalizar(Integer id, JogoFinalizadoDTO jogoFinalizadoDTO) throws Exception {
+        Optional<Jogo> optionalJogo = jogoRepository.findById(id);
+        if (optionalJogo.isPresent()) {
+            final Jogo jogo = optionalJogo.get();
+            jogo.setGolsTime1(jogoFinalizadoDTO.getGolsTime1());
+            jogo.setGolsTime2(jogoFinalizadoDTO.getGolsTime2());
+            jogo.setEncerrado(true);
+            jogo.setPublicoPagante(jogoFinalizadoDTO.getPublicoPagante());
+            return entityToDTO(jogoRepository.save(jogo));
+        } else {
+            throw new Exception("Jogo não existe");
+        }
     }
 
-    public Object classificacao() {
-    }
+    /*public Object classificacao() {
+    }*/
 
-    public Object obterJogo(Integer id) {
+    public JogoDTO obterJogo(Integer id) {
+        return entityToDTO(jogoRepository.findById(id).get());
     }
 }
