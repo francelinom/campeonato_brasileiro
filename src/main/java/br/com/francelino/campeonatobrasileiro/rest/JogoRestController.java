@@ -1,5 +1,6 @@
 package br.com.francelino.campeonatobrasileiro.rest;
 
+import br.com.francelino.campeonatobrasileiro.dto.ClassificacaoDTO;
 import br.com.francelino.campeonatobrasileiro.dto.JogoDTO;
 import br.com.francelino.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.francelino.campeonatobrasileiro.entity.Jogo;
@@ -33,12 +34,12 @@ public class JogoRestController {
         return ResponseEntity.ok().body(jogoService.finalizar(id, jogoFinalizadoDTO));
     }
 
-    /*
+
      @GetMapping(value = "/classificacao")
      public ResponseEntity<ClassificacaoDTO> classificacao() {
-     return ResponseEntity.ok().body(jogoService.classificacao());
+        return ResponseEntity.ok().body(jogoService.obterClassificacao());
      }
-     */
+
 
     @GetMapping(value = "/jogo/{id}")
     public ResponseEntity<JogoDTO> obterJogo(@PathVariable Integer id) {
