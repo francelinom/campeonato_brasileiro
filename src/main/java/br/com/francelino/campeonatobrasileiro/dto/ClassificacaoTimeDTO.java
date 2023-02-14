@@ -3,7 +3,7 @@ package br.com.francelino.campeonatobrasileiro.dto;
 import lombok.Data;
 
 @Data
-public class ClassificacaoTimeDTO extends ClassificacaoDTO {
+public class ClassificacaoTimeDTO implements Comparable<ClassificacaoTimeDTO> {
     private String time;
     private Integer idTime;
     private Integer posicao;
@@ -14,4 +14,9 @@ public class ClassificacaoTimeDTO extends ClassificacaoDTO {
     private Integer derrotas;
     private Integer golsMarcados;
     private Integer golsSofridos;
+
+    @Override
+    public int compareTo(ClassificacaoTimeDTO o) {
+        return this.getPontos().compareTo(o.getPontos());
+    }
 }

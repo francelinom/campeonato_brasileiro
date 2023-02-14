@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
 public class TimeService {
 
     @Autowired
-    private TimeRepository repository;
+    public TimeRepository repository;
 
     public TimeDTO cadastrarTime(TimeDTO time) throws Exception {
         Time entity = toEntity(time);
         if (time.getId() == null) {
             entity = repository.save(entity);
-            return toDto(entity);
+            return entityToDto(entity);
         } else {
             throw new Exception("Time já existe");
         }
     }
 
-    private Time toEntity(TimeDTO time) {
+    public Time toEntity(TimeDTO time) {
         Time entity = new Time();
         entity.setUf(time.getUf());
         entity.setId(time.getId());
@@ -35,7 +35,7 @@ public class TimeService {
         return entity;
     }
 
-    public TimeDTO toDto(Time entity) {
+    public TimeDTO entityToDto(Time entity) {
         TimeDTO dto = new TimeDTO();
         dto.setEstadio(entity.getEstadio());
         dto.setNome(entity.getNome());
@@ -47,11 +47,11 @@ public class TimeService {
 
     public List<TimeDTO> listarTimes() {
 
-        return repository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
+        return repository.findAll().stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
     }
 
     public TimeDTO obterTime(Integer id) {
-        return toDto(repository.findById(id).get());
+        return entityToDto(repository.findById(id).get());
     }
 
     public List<Time> findAll() {

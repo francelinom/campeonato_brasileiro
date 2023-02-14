@@ -7,5 +7,5 @@ import java.util.List;
 
 @Data
 public class ClassificacaoDTO {
-    private List<ClassificacaoDTO> times = new ArrayList<>();
+    private List<ClassificacaoTimeDTO> times = new ArrayList<>();
 }

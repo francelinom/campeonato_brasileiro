@@ -8,41 +8,46 @@ import br.com.francelino.campeonatobrasileiro.service.JogoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.ApiOperation;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.util.Arrays;
 @RestController
 @RequestMapping(value = "/jogos")
 public class JogoRestController {
     @Autowired
     private JogoService jogoService;
 
-    @PostMapping(value = "/gerar-jogos")
+    @ApiOperation(value = "Gera os jogos do campeonato!")
+    @PostMapping
     public ResponseEntity<Void> gerarJogos() {
-        jogoService.gerarJogos(LocalDateTime.now());
+        jogoService.gerarJogos(LocalDateTime.now(), Arrays.asList());
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "Retorna um jogo específico")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<JogoDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(jogoService.findById(id));
+    }
+
+    @ApiOperation(value = "Retorna todos os jogos")
     @GetMapping
-    public ResponseEntity<List<JogoDTO>> obterJogos() {
-        return ResponseEntity.ok().body(jogoService.listarJogos());
+    public ResponseEntity<List<JogoDTO>> findAll() {
+        return ResponseEntity.ok().body(jogoService.findAll());
     }
 
+    @ApiOperation(value = "Retorna a classificação")
+    @GetMapping(value = "/classificacao")
+    public ResponseEntity<ClassificacaoDTO> getClassificacao() {
+        return ResponseEntity.ok().body(jogoService.getClassificacao());
+    }
+
+    @ApiOperation(value = "Finaliza um jogo")
     @PostMapping(value = "/finalizar/{id}")
-    public ResponseEntity<JogoDTO> finalizar(@PathVariable Integer id, @RequestBody JogoFinalizadoDTO jogoFinalizadoDTO) throws Exception {
-        return ResponseEntity.ok().body(jogoService.finalizar(id, jogoFinalizadoDTO));
-    }
-
-
-     @GetMapping(value = "/classificacao")
-     public ResponseEntity<ClassificacaoDTO> classificacao() {
-        return ResponseEntity.ok().body(jogoService.obterClassificacao());
-     }
-
-
-    @GetMapping(value = "/jogo/{id}")
-    public ResponseEntity<JogoDTO> obterJogo(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(jogoService.obterJogo(id));
+    public ResponseEntity<Void> finalizarJogo(@PathVariable Integer id, @RequestBody JogoDTO jogoDTO) throws Exception {
+        jogoService.finalizarJogo(id, jogoDTO);
+        return ResponseEntity.ok().build();
     }
 }
